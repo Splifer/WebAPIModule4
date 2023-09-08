@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using WebAPIModule4.Models.InputAccount;
 
 namespace WebAPIModule4.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
@@ -25,7 +27,7 @@ namespace WebAPIModule4.Controllers
             return _context.Accounts.ToList();
         }
 
-        [HttpGet("lay-danh-sach-tai-khoan/{guid}")]
+        [HttpGet("lay-tai-khoan-chi-dinh/{guid}")]
         public Account GetAccount(Guid guid)
         {
             return _context.Accounts.FirstOrDefault(x => x.UserId == guid);
@@ -47,13 +49,12 @@ namespace WebAPIModule4.Controllers
             return NotFound();
         }
 
-        [HttpPut("cap-nhat-tai-khoan")]
+        [HttpPut("cap-nhat-tai-khoan/{guid}")]
         public async Task<IActionResult> UpdateAccount(Guid guid, InputAccount input)
         {
             var item = await _context.Accounts.FirstOrDefaultAsync(x => x.UserId == guid);
             if(ModelState.IsValid)
             {
-                item.UserId = input.UserId;
                 item.LoginId = input.LoginId;
                 item.Password = input.Password;
                 _context.Update(item);

@@ -80,9 +80,13 @@ public partial class Dbproject2Context : DbContext
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Product_Brand");
 
-            entity.HasOne(d => d.Payment).WithMany(p => p.Products).HasConstraintName("FK_Product_Payment");
+            entity.HasOne(d => d.Payment).WithMany(p => p.Products)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_Product_Payment");
 
-            entity.HasOne(d => d.Shipping).WithMany(p => p.Products).HasConstraintName("FK_Product_Shipping");
+            entity.HasOne(d => d.Shipping).WithMany(p => p.Products)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_Product_Shipping");
         });
 
         OnModelCreatingPartial(modelBuilder);

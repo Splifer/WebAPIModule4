@@ -28,11 +28,11 @@ public partial class Product
 
     [Column("shipping_id")]
     [StringLength(100)]
-    public string ShippingId { get; set; } = null!;
+    public string? ShippingId { get; set; }
 
     [Column("payment_id")]
     [StringLength(100)]
-    public string PaymentId { get; set; } = null!;
+    public string? PaymentId { get; set; }
 
     [Column("manufacturing_date", TypeName = "date")]
     public DateTime? ManufacturingDate { get; set; }
@@ -71,9 +71,9 @@ public partial class Product
 
     [ForeignKey("PaymentId")]
     [InverseProperty("Products")]
-    public virtual Payment Payment { get; set; } = null!;
+    public virtual Payment? Payment { get; set; }
 
     [ForeignKey("ShippingId")]
     [InverseProperty("Products")]
-    public virtual Shipping Shipping { get; set; } = null!;
+    public virtual Shipping? Shipping { get; set; }
 }

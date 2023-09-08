@@ -38,9 +38,9 @@ namespace WebAPIModule4.Controllers
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                         new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
                         new Claim("UserId", user.UserId.ToString()),
+                        new Claim("LoginId", user.LoginId),
                         new Claim("Password", user.Password),
-                        //new Claim("UserName", user.UserName),
-                        new Claim("LoginId", user.LoginId)
+                        //new Claim("UserName", user.UserName)
                     };
 
                     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
