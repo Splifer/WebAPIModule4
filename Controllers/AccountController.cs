@@ -33,6 +33,7 @@ namespace WebAPIModule4.Controllers
             return _context.Accounts.FirstOrDefault(x => x.UserId == guid);
         }
 
+        [AllowAnonymous]
         [HttpPost("tao-tai-khoan")]
         public async Task<IActionResult> CreateAccount(InputAccount input)
         {
