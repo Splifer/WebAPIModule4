@@ -53,14 +53,14 @@ namespace WebAPIModule4.Controllers
         [HttpPost("tao-san-pham")]
         public async Task<IActionResult> CreateProduct(InputProduct input)
         {
-            //var imagePath = Upload(input.Icon);
+            var imagePath = Upload(input.Icon);
             if (ModelState.IsValid)
             {
                 Product product = new Product();
                 product.ProductId = Guid.NewGuid();
                 product.ProductName = input.ProductName;
                 product.Price = input.Price;
-                //product.Icon = imagePath;
+                product.Icon = imagePath;
                 _context.Products.Add(product);
                 await _context.SaveChangesAsync();
                 return Ok(product);
@@ -71,13 +71,13 @@ namespace WebAPIModule4.Controllers
         [HttpPut("cap-nhat-san-pham/{guid}")]
         public async Task<IActionResult> UpdateProduct(Guid guid, InputProduct input)
         {
-            //var imagePath = Upload(Product.Icon);
+            var imagePath = Upload(input.Icon);
             var item = await _context.Products.FirstOrDefaultAsync(x => x.ProductId == guid);
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 item.ProductName = input.ProductName;
                 item.Price = input.Price;
-                //item.Icon = input.Icon;
+                item.Icon = imagePath;
                 _context.Update(item);
                 await _context.SaveChangesAsync();
                 return Ok(item);
