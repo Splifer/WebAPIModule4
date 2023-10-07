@@ -65,10 +65,13 @@ namespace WebAPIModule4.Controllers
                 {
                     //xu ly chuyen danh sach
                     string a = Upload(item);
-                    items.Add(new ItemIcon { Url = a, Position = 1 });
+					string fileName = Path.GetFileName(a);
+					string cleanedFileName = fileName.Replace(@"\", string.Empty);
+					items.Add(new ItemIcon { Url = cleanedFileName, Position = 1 });
+					//items.Add(new ItemIcon { Url = a, Position = 1 });
+                    Console.WriteLine(cleanedFileName);
                 }
 				product.Icons = JsonSerializer.Serialize(items);
-
 				_context.Products.Add(product);
                 await _context.SaveChangesAsync();
                 return Ok(product);
