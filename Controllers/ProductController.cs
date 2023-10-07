@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using WebAPIModule4.Models;
+using WebAPIModule4.Models.Icon;
 using WebAPIModule4.Models.InputProduct;
 
 namespace WebAPIModule4.Controllers
@@ -26,10 +29,7 @@ namespace WebAPIModule4.Controllers
         }
 
         [HttpGet("lay-san-pham-chi-dinh/{guid}")]
-        public Product GetProduct(Guid guid)
-        {
-            return _context.Products.FirstOrDefault(x => x.ProductId == guid);
-        }
+        public Product GetProduct(Guid guid) => _context.Products.FirstOrDefault(x => x.ProductId == guid);
 
         private string Upload(IFormFile file)
         {
@@ -51,17 +51,25 @@ namespace WebAPIModule4.Controllers
         }
 
         [HttpPost("tao-san-pham")]
-        public async Task<IActionResult> CreateProduct(InputProduct input)
+        public async Task<IActionResult> CreateProduct([FromForm] InputProduct input)
         {
-            var imagePath = Upload(input.Icon);
+            //var imagePath = Upload(input.Icon);
+            var items = new List<ItemIcon>();
             if (ModelState.IsValid)
             {
                 Product product = new Product();
                 product.ProductId = Guid.NewGuid();
                 product.ProductName = input.ProductName;
                 product.Price = input.Price;
-                product.Icon = imagePath;
-                _context.Products.Add(product);
+                foreach(var item in input.Icons)
+                {
+                    //xu ly chuyen danh sach
+                    string a = Upload(item);
+                    items.Add(new ItemIcon { Url = a, Position = 1 });
+                }
+				product.Icons = JsonSerializer.Serialize(items);
+
+				_context.Products.Add(product);
                 await _context.SaveChangesAsync();
                 return Ok(product);
             }
@@ -71,13 +79,13 @@ namespace WebAPIModule4.Controllers
         [HttpPut("cap-nhat-san-pham/{guid}")]
         public async Task<IActionResult> UpdateProduct(Guid guid, InputProduct input)
         {
-            var imagePath = Upload(input.Icon);
+            //var imagePath = Upload(input.Icon);
             var item = await _context.Products.FirstOrDefaultAsync(x => x.ProductId == guid);
             if (ModelState.IsValid)
             {
                 item.ProductName = input.ProductName;
                 item.Price = input.Price;
-                item.Icon = imagePath;
+                //item.Icon = imagePath;
                 _context.Update(item);
                 await _context.SaveChangesAsync();
                 return Ok(item);

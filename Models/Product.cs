@@ -40,22 +40,26 @@ public partial class Product
     [Column("expiry_date", TypeName = "date")]
     public DateTime? ExpiryDate { get; set; }
 
-    [Column("icon")]
-    public string? Icon { get; set; }
+	//[Column("icon")]
+	//public string? Icon { get; set; }
 
-    [Column("icon1")]
-    public string? Icon1 { get; set; }
+	//[Column("icon1")]
+	//public string? Icon1 { get; set; }
 
-    [Column("icon2")]
-    public string? Icon2 { get; set; }
+	//[Column("icon2")]
+	//public string? Icon2 { get; set; }
 
-    [Column("icon3")]
-    public string? Icon3 { get; set; }
+	//[Column("icon3")]
+	//public string? Icon3 { get; set; }
 
-    [Column("icon4")]
-    public string? Icon4 { get; set; }
+	//[Column("icon4")]
+	//public string? Icon4 { get; set; }
 
-    [Column("description")]
+	[Column("icon")]
+    public string? Icons {  get; set; }
+
+
+	[Column("description")]
     public string? Description { get; set; }
 
     public string? Filter { get; set; }
