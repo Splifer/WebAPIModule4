@@ -64,14 +64,13 @@ namespace WebAPIModule4.Controllers
                 foreach(var item in input.Icons)
                 {
                     //xu ly chuyen danh sach
-                    string a = Upload(item);
-					string fileName = Path.GetFileName(a);
-					string cleanedFileName = fileName.Replace(@"\", string.Empty);
-					items.Add(new ItemIcon { Url = cleanedFileName, Position = 1 });
-					//items.Add(new ItemIcon { Url = a, Position = 1 });
-                    Console.WriteLine(cleanedFileName);
+                    string pathIcon = Upload(item);
+					items.Add(new ItemIcon { Url = pathIcon, Position = 1 });
                 }
-				product.Icons = JsonSerializer.Serialize(items);
+
+                //chuyen object dang List => ve dang chuoi~
+                product.Icons = JsonSerializer.Serialize<List<ItemIcon>>(items);
+
 				_context.Products.Add(product);
                 await _context.SaveChangesAsync();
                 return Ok(product);
